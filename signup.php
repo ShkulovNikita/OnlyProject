@@ -8,6 +8,7 @@
 <?php 
     include_once "db_connector.php";
     include_once "validator.php";
+    include_once "registration.php";
     /* Скрипты для обработки формы регистрации */
     
     // переменные, соответствующие полям формы
@@ -24,7 +25,7 @@
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // проверки полей на пустоту: все должны быть заполнены
+        // проверки полей на пустоту и выполнение валидации
         if (!empty($_POST["name"])) {
             $name = htmlspecialchars($_POST["name"]);
             // валидация
@@ -67,6 +68,12 @@
         else
             $password_conf_error = "Повторите пароль";
 
+        // проверить, что все ошибки пустые (поля заполнены корректно)
+        if (($name_error == "") && ($phone_error == "") && ($email_error == "") 
+        && ($password_error == "") && ($password_conf_error == "")) {
+            // создать нового пользователя
+            signUp($name, $phone, $email, $password);
+        }
     }
 ?>
 <h2>Форма регистрации</h2>

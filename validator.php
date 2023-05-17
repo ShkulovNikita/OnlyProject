@@ -32,14 +32,14 @@ $validate_email = function ($email) {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
         return "Некорректный формат адреса почты";
     // проверка на число символов
-    if (strlen($email > 100))
+    if (strlen($email) > 100)
         return "Слишком длинный адрес почты";
     // проверка на существование пользователя с такой почтой
     $connection = connect();
     if (emailExists($connection, $email))
         return "Адрес почты уже используется";
     return "ok";
-}
+};
 
 // функция для валидации номера телефона
 $validate_phone = function ($phone) {
@@ -52,14 +52,14 @@ $validate_phone = function ($phone) {
     if (phoneExists($connection, $phone))
         return "Телефон уже используется";
     return "ok";
-}
+};
 
 // функция проверки пароля
 $validate_password = function ($password) {
     // количество символов в пароле
     if (strlen($password) < 7)
         return "Пароль должен состоять минимум из 6 символов";
-}
+};
 
 $validate_password_conf = function ($password, $password_confirm) {
     // совпадение паролей
