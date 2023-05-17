@@ -1,6 +1,5 @@
 <?php
-
-/* Скрипты, отвечающие за работу с базой данных */
+/* Функции, отвечающие за работу с базой данных */
 
 // название БД
 const DATABASE = "onlydb";
@@ -45,7 +44,7 @@ function createDatabase($connection) {
 // создание таблицы с пользователями
 function createUsersTable($connection) {
     try {
-        $sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(150) NOT NULL, phone CHAR(11) NOT NULL UNIQUE, email VARCHAR(100) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL);";
+        $sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(150) NOT NULL, phone CHAR(10) NOT NULL UNIQUE, email VARCHAR(100) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL);";
         // выполнение запроса
         $connection->exec($sql);
         echo "Создана таблица с пользователями <br>";
@@ -125,7 +124,7 @@ function editUser($connection, $id, $name, $phone, $email, $password) {
 }
 
 // проверить существование пользователя с таким же телефоном
-function checkPhone($connection, $phone) {
+function phoneExists($connection, $phone) {
     try {
         $sql = "SELECT * FROM users WHERE phone = :phone";
         $statement = $connection->prepare($sql);
@@ -140,7 +139,7 @@ function checkPhone($connection, $phone) {
 }
 
 // проверить существование пользователя с такой же почтой
-function checkEmail($connection, $email) {
+function emailExists($connection, $email) {
     try {
         $sql = "SELECT * FROM users WHERE email = :email";
         $statement = $connection->prepare($sql);

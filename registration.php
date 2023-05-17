@@ -1,24 +1,27 @@
 <?php
-include "db_connector.php";
+include_once "db_connector.php";
+include_once "validator.php";
+/* Скрипты для обработки формы регистрации */
 
 // переменные, соответствующие полям формы
 $name = $phone = $email = $password = $password_confirmation = "не задан";
 
-// функция для проверки идентичности введенных паролей
-function checkPasswords($password, $password_confirm) {
-    if ($password == $password_confirm)
-        return true;
-    else
-        return false;
+if (isset($_POST["phone"])) {
+    $phone = $_POST["phone"];
 }
 
-function signUp($name, $phone, $email, $password, $password_confirm) {
+echo $phone . "<br>";
 
+echo validatePhone($phone);
+
+
+// регистрация пользователя
+function signUp($name, $phone, $email, $password, $password_confirm) {
     // захэшировать пароль
     $password = password_hash($password, PASSWORD_DEFAULT);
 
     // установить соединение с БД
-    $connection = connect();
+    $conn = connect();
 
     // создать пользователя в БД
     createUser($connection, $name, $phone, $email, $password);
