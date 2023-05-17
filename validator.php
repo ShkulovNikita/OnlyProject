@@ -10,19 +10,28 @@ function checkPasswords($password, $password_confirm) {
         return false;
 }
 
+// валидация значения (value) выбранной функцией (validation_function)
+// с записью ошибки (если есть) в error
+function validate($validation_function, $value, &$error) {
+    $validation_result = $validation_function($value);
+    if ($validation_result != "ok") 
+        $error = $validation_result;
+}
+
 // функция для валидации имени
 $validate_name = function ($name) {
     // имя должно содержать только буквы, пробелы и дефисы
-    if (!preg_match("/^(([a-zA-Z-' ])|([а-яА-ЯЁё]))*$/", $name)) {
+    if (!preg_match("/^(([a-zA-Z-' ])|([а-яА-ЯЁё]))*$/", $name)) 
         return "Некорректные символы в имени";
-    }
     // проверка количества символов
-    if (strlen($name) > 150) {
+    if (strlen($name) > 150) 
         return "Слишком длинное имя";
-    }
-    if (strlen($name) < 4) {
+    if (strlen($name) < 4) 
         return "Слишком короткое имя";
-    }
+    // имя должно быть уникальным
+    $connection = connect();
+    if (nameExists($connection, $name))
+        return "Имя уже используется";
     return "ok";
 };
 
@@ -49,6 +58,8 @@ $validate_phone = function ($phone) {
         return "Неверный формат номера телефона";
     // проверка на существование пользователя с таким же номером телефона
     $connection = connect();
+    // оставить последние 10 цифр телефона
+    truncatePhone($phone);
     if (phoneExists($connection, $phone))
         return "Телефон уже используется";
     return "ok";
@@ -66,6 +77,15 @@ $validate_password_conf = function ($password, $password_confirm) {
     if ($password != $password_confirm) {
         return "Пароли не совпадают";
     }
+};
+
+// оставить последние 10 цифр телефона
+function truncatePhone (&$phone) {
+    // убрать первую цифру и плюс, если есть
+    $phone = match(strlen($phone)) {
+        11 => substr($phone, 1, strlen($phone) - 1),
+        12 => substr($phone, 2, strlen($phone) - 1),
+    };
 }
 
 ?>

@@ -44,7 +44,7 @@ function createDatabase($connection) {
 // создание таблицы с пользователями
 function createUsersTable($connection) {
     try {
-        $sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(150) NOT NULL, phone CHAR(10) NOT NULL UNIQUE, email VARCHAR(100) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL);";
+        $sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(150) NOT NULL UNIQUE, phone CHAR(10) NOT NULL UNIQUE, email VARCHAR(100) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL);";
         // выполнение запроса
         $connection->exec($sql);
         echo "Создана таблица с пользователями <br>";
@@ -120,6 +120,21 @@ function editUser($connection, $id, $name, $phone, $email, $password) {
     }
     catch (PDOException $ex) {
         echo "Ошибка редактирования пользователя: " . $ex->getMessage();
+    }
+}
+
+// проверить существование пользователя с таким же именем
+function nameExists($connection, $name) {
+    try {
+        $sql = "SELECT * FROM users WHERE name = :name";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(":name", $name);
+        $statement->execute();
+
+        return sameExists($statement);
+    }
+    catch (PDOException $ex) {
+        echo "Ошибка получения данных: " . $ex->getMessage();
     }
 }
 

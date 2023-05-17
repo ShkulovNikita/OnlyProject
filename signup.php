@@ -15,14 +15,6 @@
     $name = $phone = $email = $password = $password_confirmation = "не задан";
     // переменные с ошибками
     $name_error = $phone_error = $email_error = $password_error = $password_conf_error = "";
-    
-    // валидация значения (value) выбранной функцией (validation_function)
-    // с записью ошибки (если есть) в error
-    function validate($validation_function, $value, &$error) {
-        $validation_result = $validation_function($value);
-        if ($validation_result != "ok") 
-            $error = $validation_result;
-    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // проверки полей на пустоту и выполнение валидации
