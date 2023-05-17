@@ -8,6 +8,16 @@
 <div id="header">
     <h2>Добро пожаловать!</h2>
 </div>
+<div id="message">
+    <?php
+    include "session.php";
+
+    // вывести информационное сообщение, если есть
+    echo "<p>" . getValueFromSession("message") . "</p>";
+
+    session_destroy();
+    ?>
+</div>
 <div id="buttons">
     <div id="signin">
         <a href="signin.php">Войти</a>
