@@ -1,7 +1,7 @@
 <?php 
-include_once "validator.php";
-include_once "session.php";
-include_once "db_connector.php";
+include_once "../helpers/validator.php";
+include_once "../helpers/session.php";
+include_once "../helpers/db_connector.php";
 /* Скрипты для обработки формы авторизации */
 
 // переменные, соответствующие полям формы
@@ -94,7 +94,7 @@ function returnToLogin($login, $login_error, $password_error) {
     // сохранить в сессию
     saveValuesToSession($values_to_store);
     // редирект обратно на страницу авторизации
-    header("Location: " . "signin.php");
+    header("Location: " . "../signin.php");
 }
 
 

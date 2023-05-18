@@ -10,7 +10,7 @@
 </div>
 <div id="message">
     <?php
-    include "session.php";
+    include "helpers/session.php";
 
     // вывести информационное сообщение, если есть
     echo "<p>" . getValueFromSession("message") . "</p>";

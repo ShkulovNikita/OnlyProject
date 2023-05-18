@@ -1,7 +1,7 @@
 <?php
-include_once "db_connector.php";
-include_once "validator.php";
-include_once "session.php";
+include_once "../helpers/validator.php";
+include_once "../helpers/session.php";
+include_once "../helpers/db_connector.php";
 /* Скрипты для обработки формы регистрации */
     
 // переменные, соответствующие полям формы
@@ -62,7 +62,7 @@ if (($name_error == "") && ($phone_error == "") && ($email_error == "")
     storeValueToSession("message", "Вы успешно зарегистрировались!");
 
     // редирект на главную страницу после успешной регистрации
-    header("Location: " . "index.php");
+    header("Location: " . "../index.php");
 }
 else {
     /* сохранить введенные значения и ошибки в сессию, 
@@ -74,7 +74,7 @@ else {
     saveValuesToSession($values_to_store);
 
     // редирект обратно на страницу регистрации
-    header("Location: " . "signup.php");
+    header("Location: " . "../signup.php");
 }
 
 // регистрация пользователя

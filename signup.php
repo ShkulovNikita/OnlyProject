@@ -6,7 +6,7 @@
 </head>
 <body>
 <?php 
-include_once "session.php";
+include_once "helpers/session.php";
 
 // получить данные из сессии
 
@@ -25,7 +25,7 @@ $password_conf_error = getValueFromSession("password_conf_error");
 session_destroy();
 ?>
 <h2>Форма регистрации</h2>
-<form action="registration.php" method="POST">
+<form action="formhandlers/registration.php" method="POST">
     <p>Имя: <input type="text" name="name" value="<?php echo $name;?>" /><span class="error">* <?php echo $name_error ?></p>
     <p>Телефон: <input type="tel" placeholder="+7XXXXXXXXXX" name="phone" value="<?php echo $phone;?>" /><span class="error">* <?php echo $phone_error ?></p>
     <p>Почта: <input type="email" placeholder="user@yandex.ru" name="email" value="<?php echo $email;?>" /><span class="error">* <?php echo $email_error ?></p>

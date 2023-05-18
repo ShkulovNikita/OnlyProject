@@ -1,5 +1,6 @@
 <?php
 include_once "db_connector.php";
+include_once "../helpers/session.php";
 /* Функции для валидации полей форм */
 
 // функция для проверки идентичности введенных паролей
@@ -68,8 +69,9 @@ $validate_phone = function ($phone) {
 // функция проверки пароля
 $validate_password = function ($password) {
     // количество символов в пароле
-    if (strlen($password) < 7)
-        return "Пароль должен состоять минимум из 6 символов";
+    if (strlen($password) < 6) { 
+        return "Пароль должен состоять минимум из 6 символов"; 
+    }
     return "ok";
 };
 
