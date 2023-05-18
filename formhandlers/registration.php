@@ -2,6 +2,7 @@
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_form.php";
 /* Скрипты для обработки формы регистрации */
     
 // переменные, соответствующие полям формы
@@ -12,41 +13,15 @@ $name_error = $phone_error = $email_error = $password_error = $password_conf_err
 // проверки полей на пустоту, валидация, проверка на уникальность
 
 // имя пользователя
-if (!empty($_POST["name"])) 
-    validate_field("name", $name, $name_error, $validate_name, true, $validate_name_unique);
-else
-    $name_error = "Введите имя";
-
+checkName($name, $name_error);
 // номер телефона
-if (!empty($_POST["phone"]))
-    validate_field("phone", $phone, $phone_error, $validate_phone, true, $validate_phone_unique);
-else
-    $phone_error = "Введите номер телефона";
-
+checkPhone($phone, $phone_error);
 // адрес почты
-if (!empty($_POST["email"])) 
-    validate_field("email", $email, $email_error, $validate_email, true, $validate_email_unique);
-else 
-    $email_error = "Введите адрес почты";
-
+checkEmail($email, $email_error);
 // пароль
-if (!empty($_POST["password"])) 
-    validate_field("password", $password, $password_error, $validate_password, false);
-else
-    $password_error = "Введите пароль";
-
+checkPassword($password, $password_error);
 // подтверждение пароля
-if (empty($_POST["password_confirmation"])) 
-    $password_conf_error = "Повторите пароль";
-else {
-    $password_confirmation = htmlspecialchars($_POST["password_confirmation"]);
-    // проверить совпадение паролей
-    if (!empty($_POST["password"])) {
-        $val_result = $validate_password_conf($password, $password_confirmation);
-        if ($val_result != "ok")
-            $password_conf_error = $val_result;
-    }
-}
+checkPasswordConfirmation($password_conf_error);
 
 // проверить, что все ошибки пустые (поля заполнены корректно)
 if (($name_error == "") && ($phone_error == "") && ($email_error == "") 

@@ -9,7 +9,8 @@ include_once "session.php";
 // $validate_function - соответствующая функция валидации
 // $isUnique - требуется ли проверка поля на уникальность значения
 // $unique_val_function - соответствующая функция проверки уникальности
-function validate_field($field_name, &$field_value, &$field_error, $validate_function, $isUnique, $unique_val_function = null) {
+function validate_field($field_name, &$field_value, &$field_error, 
+                        $validate_function, $isUnique, $unique_val_function = null) {
     $field_value = htmlspecialchars($_POST[$field_name]);
     // валидация
     validate($validate_function, $field_value, $field_error);
