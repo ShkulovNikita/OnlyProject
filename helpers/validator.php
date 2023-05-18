@@ -43,7 +43,7 @@ $validate_name = function ($name) {
 // функция для проверки уникальности имени
 $validate_name_unique = function($name) {
     $connection = connect();
-    if (nameExists($connection, $name))
+    if (sameUserExists($connection, "name", $name))
         return "Имя уже используется";
     return "ok";
 };
@@ -62,7 +62,7 @@ $validate_email = function ($email) {
 // функция для проверки уникальности почты
 $validate_email_unique = function($email) {
     $connection = connect();
-    if (emailExists($connection, $email))
+    if (sameUserExists($connection, "email", $email))
         return "Адрес почты уже используется";
     return "ok";
 };
@@ -81,7 +81,7 @@ $validate_phone_unique = function ($phone) {
     $connection = connect();
     // оставить последние 10 цифр телефона
     truncatePhone($phone);
-    if (phoneExists($connection, $phone))
+    if (sameUserExists($connection, "phone", $phone))
         return "Телефон уже используется";
     return "ok";
 };

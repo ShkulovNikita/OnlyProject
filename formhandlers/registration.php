@@ -1,8 +1,8 @@
 <?php
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_form.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 /* Скрипты для обработки формы регистрации */
     
 // переменные, соответствующие полям формы
@@ -13,15 +13,15 @@ $name_error = $phone_error = $email_error = $password_error = $password_conf_err
 // проверки полей на пустоту, валидация, проверка на уникальность
 
 // имя пользователя
-checkName($name, $name_error);
+checkName($name, $name_error, $validate_name, $validate_name_unique);
 // номер телефона
-checkPhone($phone, $phone_error);
+checkPhone($phone, $phone_error, $validate_phone, $validate_phone_unique);
 // адрес почты
-checkEmail($email, $email_error);
+checkEmail($email, $email_error, $validate_email, $validate_email_unique);
 // пароль
-checkPassword($password, $password_error);
+checkPassword($password, $password_error, $validate_password);
 // подтверждение пароля
-checkPasswordConfirmation($password_conf_error);
+checkPasswordConfirmation($password_conf_error, $validate_password_conf);
 
 // проверить, что все ошибки пустые (поля заполнены корректно)
 if (($name_error == "") && ($phone_error == "") && ($email_error == "") 

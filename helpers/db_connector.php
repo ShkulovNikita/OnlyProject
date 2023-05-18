@@ -71,41 +71,15 @@ function createUser($connection, $name, $phone, $email, $password) {
     }
 }
 
-// получение пользователя по ID
-function getUserById($connection, $id) {
+// получение пользователя по одному из уникальных значений (type - id, name, email, phone)
+function getUser($connection, $type, $value) {
     try {
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT * FROM users WHERE $type = :login";
         $statement = $connection->prepare($sql);
-        $statement->bindValue(":id", $id);
+        $statement->bindValue(":login", $value);
 
         $statement->execute();
 
-        if ($statement->rowCount() > 0)
-            foreach ($statement as $row) 
-                return ($row);
-        else
-            echo "Пользователь не найден";
-    }
-    catch (PDOException $ex) {
-        echo "Ошибка получения пользователя: " . $ex->getMessage();
-    }
-}
-
-// получение пользователя по телефону или почте
-function getUser($connection, $login, $type) {
-    try {
-        // построить запрос в зависимости от введенного логина
-        $sql;
-        if (($type == "phone") || ($type == "email"))   
-            $sql = "SELECT * FROM users WHERE $type = :login";
-        else
-            return null;
-
-        $statement = $connection->prepare($sql);
-        $statement->bindValue(":login", $login);
-        $statement->execute();
-
-        // если найден некоторый пользователь, то вернуть его
         if ($statement->rowCount() > 0)
             foreach ($statement as $row) 
                 return ($row);
@@ -136,58 +110,16 @@ function editUser($connection, $id, $name, $phone, $email, $password) {
     }
     catch (PDOException $ex) {
         echo "Ошибка редактирования пользователя: " . $ex->getMessage();
+        return false;
     }
 }
 
-// проверить существование пользователя с таким же именем
-function nameExists($connection, $name) {
-    try {
-        $sql = "SELECT * FROM users WHERE name = :name";
-        $statement = $connection->prepare($sql);
-        $statement->bindValue(":name", $name);
-        $statement->execute();
-
-        return sameExists($statement);
-    }
-    catch (PDOException $ex) {
-        echo "Ошибка получения данных: " . $ex->getMessage();
-    }
-}
-
-// проверить существование пользователя с таким же телефоном
-function phoneExists($connection, $phone) {
-    try {
-        $sql = "SELECT * FROM users WHERE phone = :phone";
-        $statement = $connection->prepare($sql);
-        $statement->bindValue(":phone", $phone);
-        $statement->execute();
-
-        return sameExists($statement);
-    }
-    catch (PDOException $ex) {
-        echo "Ошибка получения данных: " . $ex->getMessage();
-    }
-}
-
-// проверить существование пользователя с такой же почтой
-function emailExists($connection, $email) {
-    try {
-        $sql = "SELECT * FROM users WHERE email = :email";
-        $statement = $connection->prepare($sql);
-        $statement->bindValue(":email", $email);
-        $statement->execute();
-
-        return sameExists($statement);
-    }
-    catch (PDOException $ex) {
-        echo "Ошибка получения данных: " . $ex->getMessage();
-    }
-}
-
-// проверка, были ли получены какие-либо строки по запросу
-function sameExists($sql_result) {
-    if ($sql_result->rowCount() > 0)
-        return true;
-    return false;
+// проверить существование пользователя с таким же именем/телефоном/почтой
+function sameUserExists($connection, $type, $value) {
+    $user = getUser($connection, $type, $value);
+    if (is_null($user))
+        return false;
+    else
+        return $user;
 }
 ?>

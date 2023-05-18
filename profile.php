@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Регистрация</title>
+<title>Профиль пользователя</title>
 <meta charset="utf-8" />
 </head>
 <body>
@@ -31,10 +31,13 @@ $email_error = getValueFromSession("email_error");
 $password_error = getValueFromSession("password_error");
 $password_conf_error = getValueFromSession("password_conf_error");
 
+$message = getValueFromSession("message");
+
 // очистить ошибки в сессии
-removeValuesFromSession(compact("name_error", "phone_error", "email_error", "password_error", "password_conf_error"));
+removeValuesFromSession(compact("name_error", "phone_error", "email_error", "password_error", "password_conf_error", "message"));
 
 ?>
+<?php if (isset($message)) echo "<p>$message</p>" ?>
 <h2>Профиль пользователя</h2>
 <?php createForm("profile", $user->name, $user->phone, $user->email, $name_error, $phone_error, $email_error, $password_error,$password_conf_error) ?>
 </body>

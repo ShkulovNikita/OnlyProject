@@ -86,7 +86,7 @@ function tryLogin ($login, $login_type, $password) {
     $connection = connect();
 
     // получить пользователя
-    $user = getUser($connection, $login, $login_type);
+    $user = getUser($connection, $login_type, $login);
 
     // если ошибка, то вернуть результат как есть
     if ((is_null($user)) || ($user == "Пользователь не найден"))
