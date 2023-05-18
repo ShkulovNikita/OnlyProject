@@ -13,7 +13,6 @@ function connect() {
     try {
         // подключение через созданного пользователя
         $connection = new PDO("mysql:host=localhost", DB_USER, DB_PASSWORD);
-        echo "Соединение установлено <br>";
         // создание БД, если её нет
         createDatabase($connection);
         // новое соединение, теперь к конкретной БД
@@ -34,7 +33,6 @@ function createDatabase($connection) {
         $sql = "CREATE DATABASE IF NOT EXISTS onlydb";
         // выполнение запроса
         $connection->exec($sql);
-        echo "Создана база данных <br>";
     }
     catch (PDOException $ex) {
         echo "Ошибка создания БД: " . $ex->getMessage();
@@ -47,7 +45,6 @@ function createUsersTable($connection) {
         $sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(150) NOT NULL UNIQUE, phone CHAR(10) NOT NULL UNIQUE, email VARCHAR(100) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL);";
         // выполнение запроса
         $connection->exec($sql);
-        echo "Создана таблица с пользователями <br>";
     }
     catch (PDOException $ex) {
         echo "Ошибка создания таблицы: " . $ex->getMessage();
@@ -193,5 +190,4 @@ function sameExists($sql_result) {
         return true;
     return false;
 }
-
 ?>

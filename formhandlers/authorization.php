@@ -12,57 +12,71 @@ $login_error = $email_message = $phone_message = $password_error = "";
 // тип введенного логина: телефон или почта
 $login_type = "";
 
-// проверка полей на пустоту и валидация
-if (!empty($_POST["login"])) {
+// проверка поля логина на пустоту и валидация
+if (empty($_POST["login"]))
+    $login_error = "Введите телефон или адрес почты";
+else {
     $login = htmlspecialchars($_POST["login"]);
-    // валидация
     
     // проверка, является ли введенный логин телефоном или почтой
     validate($validate_phone, $login, $phone_message);
     validate($validate_email, $login, $email_message);
-
-    // если было получено сообщение, что телефон/почта уже используется,
-    // то это означает корректный ввод логина
-    if ($phone_message == "Телефон уже используется")
-        $login_type = "phone";
-    elseif ($email_message == "Адрес почты уже используется")
-        $login_type = "email";
-    else
-        $login_error = "Неверный формат логина либо данный пользователь не существует";
+    // не прошло валидацию ни на номер телефона, ни на адрес почты
+    if (($phone_message != "") && ($email_message != ""))
+        $login_error = "Неверный формат логина";
+    // был введен номер телефона
+    elseif ($phone_message == "") {
+        validate($validate_phone_unique, $login, $phone_message);
+        // совпадение найдено
+        if ($phone_message == "Телефон уже используется")
+            $login_type = "phone";
+        // не найдено
+        else
+            $login_error = "Данного пользователя не существует";
+    }
+    // был введен адрес почты
+    elseif ($email_message == "") {
+        validate($validate_email_unique, $login, $email_message);
+        if ($email_message == "Адрес почты уже используется")
+            $login_type = "email";
+        else
+            $login_error = "Данного пользователя не существует";
+    }
 }
-else
-    $login_error = "Введите телефон или адрес почты";
 
-if (!empty($_POST["password"])) {
+// проверка пароля
+if (empty($_POST["password"])) 
+    $password_error = "Введите пароль";
+else {
     $password = htmlspecialchars($_POST["password"]);
     validate($validate_password, $password, $password_error);
 }
-else
-    $password_error = "Введите пароль";
+echo "aaaaaa" . $login_error . "<br>";
 
-// если был определен тип логина и введен корректный пароль,
-// то попытка залогиниться
-if (($login_type != "") && ($login_error == "") && ($password_error == "")) {
-    $user = tryLogin($login, $login_type, $password);
-
-    if (is_null($user)) {
-        $login_error = "Не удалось получить пользователя";
-        echo $login_error;
-        returnToLogin($login, $login_error, $password_error);
-    }
-    elseif (($user == "Пользователь не найден") || ($user == "Введен неверный пароль")) {
-        $password_error = $user;
-        echo $login_error;
-        returnToLogin($login, $login_error, $password_error);
-    }
-    else {
-        // вход успешно выполнен, сохранить ID пользователя в сессию
-        storeValueToSession("user_id", $user["id"]);
-        header("Location: " . "../profile.php");
-    }
-}
-else
+// если была найдена какая-либо ошибка, то вернуться к форме для исправления
+if (($login_type == "") || ($login_error != "") || ($password_error != "")) {
     returnToLogin($login, $login_error, $password_error);
+}
+    
+// если был успешно определен тип логина и введен корректный пароль,
+// то попытка залогиниться
+$user = tryLogin($login, $login_type, $password);
+
+if (is_null($user)) {
+    //$login_error = "Не удалось получить пользователя";
+    $login_error = $login_error . "aaaa";
+    returnToLogin($login, $login_error, $password_error);
+}
+elseif (($user == "Пользователь не найден") || ($user == "Введен неверный пароль")) {
+    $password_error = $user;
+    returnToLogin($login, $login_error, $password_error);
+}
+else {
+    // вход успешно выполнен, сохранить ID текущего пользователя в сессию
+    storeValueToSession("user_id", $user["id"]);
+    header("Location: " . "../profile.php");
+    die();
+}
 
 // авторизация пользователя
 function tryLogin ($login, $login_type, $password) {
@@ -96,7 +110,6 @@ function returnToLogin($login, $login_error, $password_error) {
     saveValuesToSession($values_to_store);
     // редирект обратно на страницу авторизации
     header("Location: " . "../signin.php");
+    die();
 }
-
-
 ?>
