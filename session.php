@@ -18,7 +18,6 @@ function saveValuesToSession($values) {
 function storeValueToSession($key, $value) {
     if(!isset($_SESSION)) 
         session_start(); 
-
     $_SESSION[$key] = $value;
 }
 
@@ -32,4 +31,5 @@ function getValueFromSession($key) {
     else
         return "";
 }
+
 ?>

@@ -8,11 +8,6 @@
 <?php 
 include_once "session.php";
 
-// переменные, соответствующие полям формы
-$name = $phone = $email = $password = $password_confirmation = "";
-// переменные с ошибками
-$name_error = $phone_error = $email_error = $password_error = $password_conf_error = "";
-
 // получить данные из сессии
 
 // значения полей (если были введены ранее)

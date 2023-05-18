@@ -74,6 +74,26 @@ function createUser($connection, $name, $phone, $email, $password) {
     }
 }
 
+// получение пользователя по ID
+function getUserById($connection, $id) {
+    try {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(":id", $id);
+
+        $statement->execute();
+
+        if ($statement->rowCount() > 0)
+            foreach ($statement as $row) 
+                return ($row);
+        else
+            echo "Пользователь не найден";
+    }
+    catch (PDOException $ex) {
+        echo "Ошибка получения пользователя: " . $ex->getMessage();
+    }
+}
+
 // получение пользователя по телефону или почте
 function getUser($connection, $login, $type) {
     try {
@@ -85,14 +105,13 @@ function getUser($connection, $login, $type) {
             return null;
 
         $statement = $connection->prepare($sql);
-        $statement->bindValue(":login", $login); 
-
+        $statement->bindValue(":login", $login);
         $statement->execute();
 
+        // если найден некоторый пользователь, то вернуть его
         if ($statement->rowCount() > 0)
-            foreach ($statement as $row) {
+            foreach ($statement as $row) 
                 return ($row);
-            }
         else
             echo "Пользователь не найден";
     }

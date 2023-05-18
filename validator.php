@@ -70,13 +70,14 @@ $validate_password = function ($password) {
     // количество символов в пароле
     if (strlen($password) < 7)
         return "Пароль должен состоять минимум из 6 символов";
+    return "ok";
 };
 
 $validate_password_conf = function ($password, $password_confirm) {
     // совпадение паролей
-    if ($password != $password_confirm) {
+    if ($password != $password_confirm) 
         return "Пароли не совпадают";
-    }
+    return "ok";
 };
 
 // оставить последние 10 цифр телефона
