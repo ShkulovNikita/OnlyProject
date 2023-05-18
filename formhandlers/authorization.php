@@ -51,7 +51,6 @@ else {
     $password = htmlspecialchars($_POST["password"]);
     validate($validate_password, $password, $password_error);
 }
-echo "aaaaaa" . $login_error . "<br>";
 
 // если была найдена какая-либо ошибка, то вернуться к форме для исправления
 if (($login_type == "") || ($login_error != "") || ($password_error != "")) {
@@ -63,8 +62,7 @@ if (($login_type == "") || ($login_error != "") || ($password_error != "")) {
 $user = tryLogin($login, $login_type, $password);
 
 if (is_null($user)) {
-    //$login_error = "Не удалось получить пользователя";
-    $login_error = $login_error . "aaaa";
+    $login_error = "Не удалось получить пользователя";
     returnToLogin($login, $login_error, $password_error);
 }
 elseif (($user == "Пользователь не найден") || ($user == "Введен неверный пароль")) {

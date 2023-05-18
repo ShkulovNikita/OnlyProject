@@ -12,48 +12,33 @@ $name_error = $phone_error = $email_error = $password_error = $password_conf_err
 // проверки полей на пустоту, валидация, проверка на уникальность
 
 // имя пользователя
-if (!empty($_POST["name"])) {
-    $name = htmlspecialchars($_POST["name"]);
-    // валидация
-    validate($validate_name, $name, $name_error);
-    // проверка уникальности
-    if ($name_error == "")
-        validate($validate_name_unique, $name, $name_error);
-}
+if (!empty($_POST["name"])) 
+    validate_field("name", $name, $name_error, $validate_name, true, $validate_name_unique);
 else
     $name_error = "Введите имя";
 
 // номер телефона
-if (!empty($_POST["phone"])) {
-    $phone = htmlspecialchars($_POST["phone"]);
-    validate($validate_phone, $phone, $phone_error);
-    if ($phone_error == "") 
-        validate($validate_phone_unique, $phone, $phone_error);
-}
+if (!empty($_POST["phone"]))
+    validate_field("phone", $phone, $phone_error, $validate_phone, true, $validate_phone_unique);
 else
     $phone_error = "Введите номер телефона";
 
 // адрес почты
-if (!empty($_POST["email"])) {
-    $email = htmlspecialchars($_POST["email"]);
-    validate($validate_email, $email, $email_error);
-    if ($email_error == "")
-        validate($validate_email_unique, $email, $email_error);
-}
+if (!empty($_POST["email"])) 
+    validate_field("email", $email, $email_error, $validate_email, true, $validate_email_unique);
 else 
     $email_error = "Введите адрес почты";
 
 // пароль
-if (!empty($_POST["password"])) {
-    $password = htmlspecialchars($_POST["password"]);
-    validate($validate_password, $password, $password_error);
-}
+if (!empty($_POST["password"])) 
+    validate_field("password", $password, $password_error, $validate_password, false);
 else
     $password_error = "Введите пароль";
 
 // подтверждение пароля
-if (!empty($_POST["password_confirmation"])) 
-{
+if (empty($_POST["password_confirmation"])) 
+    $password_conf_error = "Повторите пароль";
+else {
     $password_confirmation = htmlspecialchars($_POST["password_confirmation"]);
     // проверить совпадение паролей
     if (!empty($_POST["password"])) {
@@ -62,12 +47,10 @@ if (!empty($_POST["password_confirmation"]))
             $password_conf_error = $val_result;
     }
 }
-else
-    $password_conf_error = "Повторите пароль";
 
 // проверить, что все ошибки пустые (поля заполнены корректно)
 if (($name_error == "") && ($phone_error == "") && ($email_error == "") 
-&& ($password_error == "") && ($password_conf_error == "")) {
+    && ($password_error == "") && ($password_conf_error == "")) {
     // создать нового пользователя
     signUp($name, $phone, $email, $password);
 
