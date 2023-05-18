@@ -1,6 +1,6 @@
 <?php
 include_once "db_connector.php";
-include_once "../helpers/session.php";
+include_once "session.php";
 /* Функции для валидации полей форм */
 
 // функция для проверки идентичности введенных паролей

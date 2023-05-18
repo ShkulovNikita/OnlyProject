@@ -6,15 +6,23 @@
 </head>
 <body>
 <?php 
+include_once "classes/user.php";
 include_once "helpers/session.php";
 include_once "helpers/user_form.php";
+include_once "helpers/user_helper.php";
 
-// получить данные из сессии
+// идентификатор текущего пользователя
+$id = checkLogin();
 
-// значения полей (если были введены ранее)
-$name = getValueFromSession("name");
-$phone = getValueFromSession("phone");
-$email = getValueFromSession("email");
+// проверить, вошел ли пользователь
+if ($id == false) 
+    // если нет - редирект на главную
+    redirectToMainPage();
+
+$user = getUserData($id);
+
+if ($user == "Не удалось получить пользователя")
+    redirectToMainPage();
 
 // ошибки
 $name_error = getValueFromSession("name_error");
@@ -23,9 +31,11 @@ $email_error = getValueFromSession("email_error");
 $password_error = getValueFromSession("password_error");
 $password_conf_error = getValueFromSession("password_conf_error");
 
-session_destroy();
+// очистить ошибки в сессии
+removeValuesFromSession(compact("name_error", "phone_error", "email_error", "password_error", "password_conf_error"));
+
 ?>
-<h2>Форма регистрации</h2>
-<?php createForm("profile", $name, $phone, $email, $name_error, $phone_error, $email_error, $password_error,$password_conf_error) ?>
+<h2>Профиль пользователя</h2>
+<?php createForm("profile", $user->name, $user->phone, $user->email, $name_error, $phone_error, $email_error, $password_error,$password_conf_error) ?>
 </body>
 </html>

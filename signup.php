@@ -9,8 +9,6 @@
 include_once "helpers/user_form.php";
 include_once "helpers/session.php";
 
-// получить данные из сессии
-
 // значения полей (если были введены ранее)
 $name = getValueFromSession("name");
 $phone = getValueFromSession("phone");

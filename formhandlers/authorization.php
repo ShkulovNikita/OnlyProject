@@ -1,7 +1,8 @@
 <?php 
-include_once "../helpers/validator.php";
-include_once "../helpers/session.php";
-include_once "../helpers/db_connector.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
+
 /* Скрипты для обработки формы авторизации */
 
 // переменные, соответствующие полям формы
@@ -57,7 +58,7 @@ if (($login_type != "") && ($login_error == "") && ($password_error == "")) {
     else {
         // вход успешно выполнен, сохранить ID пользователя в сессию
         storeValueToSession("user_id", $user["id"]);
-        echo $user["id"];
+        header("Location: " . "../profile.php");
     }
 }
 else

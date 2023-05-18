@@ -14,6 +14,19 @@ function saveValuesToSession($values) {
     }
 }
 
+// удалить набор значений из сессии
+function removeValuesFromSession($values) {
+    try {
+        if(!isset($_SESSION)) 
+            session_start(); 
+        foreach($values as $key => $value)
+            unset($_SESSION[$key]);
+    }
+    catch (Exception $ex) {
+        echo "Ошибка сессии: " . $ex->getMessage();
+    }
+}
+
 // сохранить значение в сессию по ключу
 function storeValueToSession($key, $value) {
     if(!isset($_SESSION)) 
