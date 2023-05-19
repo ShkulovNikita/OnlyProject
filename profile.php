@@ -7,19 +7,16 @@
 </head>
 <body>
 <?php 
+include_once "router.php";
 include_once "classes/user.php";
 include_once "helpers/session.php";
 include_once "helpers/user_helper.php";
 include_once "helpers/html_helper.php";
 
+routeUser("profile");
+
 // идентификатор текущего пользователя
 $id = checkLogin();
-
-// проверить, вошел ли пользователь
-if ($id == false) 
-    // если нет - редирект на главную
-    redirectToMainPage();
-
 $user = getUserData($id);
 
 if ($user == "Не удалось получить пользователя")

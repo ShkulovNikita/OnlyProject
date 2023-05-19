@@ -8,8 +8,11 @@
 <body>
 <?php
 include_once "helpers/html_helper.php";
-createHeader();
+include_once "router.php";
+
+routeUser("index");
 ?>
+<?php createHeader(); ?>
 <div class="flex-container">
     <div class="empty-block"></div>
     <div id="content">

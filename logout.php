@@ -1,5 +1,5 @@
 <?php 
-include_once "helpers/user_helper.php";
+include_once "router.php";
 /* Скрипт, ответственый за выход пользователя из профиля */
-logout();
+routeUser("logout");
 ?>

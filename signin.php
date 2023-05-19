@@ -7,8 +7,11 @@
 </head>
 <body>
 <?php 
+include_once "router.php";
 include_once "helpers/session.php";
 include_once "helpers/html_helper.php";
+
+routeUser("signin");
 
 // получить данные из сессии
 

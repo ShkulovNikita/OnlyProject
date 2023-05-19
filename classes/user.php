@@ -1,5 +1,6 @@
 <?php 
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
 
 class User {
     public $id, $name, $phone, $email, $password;
@@ -30,6 +31,14 @@ class User {
             else
                 return true;
         }
+    }
+
+    // проверка, вошел ли пользователь в систему 
+    static function isLoggedIn() {
+        if (getValueFromSession("user_id") != "")
+            return true;
+        else
+            return false;
     }
 }
 ?>
