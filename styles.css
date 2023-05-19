@@ -1,0 +1,99 @@
+/* ----------- */
+/* Общие стили */
+/* ----------- */
+
+/* убрать отступы по умолчанию */
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, form, footer, header {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+	margin: 0 auto;
+	height: 100%;
+	width: 100%;
+	font-family: Arial;
+    background-color: aliceblue;
+}
+
+/* ---------------- */
+/* Стили для хэдера */
+/* ---------------- */
+
+header {
+    height: 4em;
+    background-color:lavender;
+}
+
+header p {
+    font-size: x-large;
+    text-align: center;
+    padding-top: 0.7em;
+    color: RGB(22, 22, 112);
+}
+
+/* -------------------------------- */
+/* Стили для основной части страниц */
+/* -------------------------------- */
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* основной контент страницы */
+#content {
+    width: 500px;
+    min-width: 500px;
+    flex-basis: auto;
+    flex-shrink: 1;
+    margin: 2em;
+}
+
+/* кнопки либо формы для пользователя */
+#user-menu {
+    background-color: lavender;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* пустые блоки по бокам от основного блока */
+.empty-block {
+    width: auto;
+    flex-basis: auto;
+    background-color: blueviolet;
+    flex-shrink: 4;
+}
+
+/* информационные сообщения */
+#message {
+    background-color: lightskyblue;
+    border: 1px solid lightseagreen;
+    color: lightseagreen;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+
+/* ---------------- */
+/* Стили для футера */
+/* ---------------- */
+footer {
+    width: 200px;
+    margin: 1em auto;
+}
+
+p {
+    color: RGB(29, 29, 150);
+}

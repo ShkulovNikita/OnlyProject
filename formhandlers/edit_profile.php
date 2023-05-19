@@ -1,9 +1,9 @@
 <?php
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_helper.php";
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_form.php";
+include_once "../helpers/validator.php";
+include_once "../helpers/session.php";
+include_once "../helpers/db_connector.php";
+include_once "../helpers/user_helper.php";
+include_once "../helpers/user_form.php";
 
 /* Скрипты, связанные с редактированием профиля пользователя */
 

@@ -4,36 +4,6 @@ include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 /* Скрипты, связанные с формами и их полями на страницах
 регистрации и редактирования профиля */
 
-// вывести форму регистрации или профиля в зависимости от указанного типа
-function createForm($type, $name, $phone, $email, $name_error, $phone_error, $email_error, $password_error, $password_conf_error) {
-    // заголовок формы со скриптом-обработчиком
-    if ($type == "signup") 
-        echo '<form action="formhandlers/registration.php" method="POST">' . "\n";
-    elseif ($type == "profile")
-        echo '<form action="formhandlers/edit_profile.php" method="POST">' . "\n";
-    
-    // поле для имени пользователя
-    echo '<p>Имя: <input type="text" name="name" value="' . $name . '" /><span class="error">* ' . $name_error . '</p>' . "\n";
-    
-    // поле для телефона
-    echo '<p>Телефон: <input type="tel" placeholder="+7XXXXXXXXXX" name="phone" value="' . $phone . '" /><span class="error">* ' . $phone_error . '</p>' . "\n";
-    
-    // почта
-    echo '<p>Почта: <input type="email" placeholder="user@yandex.ru" name="email" value="' . $email . '" /><span class="error">* ' . $email_error . "</p>" . "\n";
-    
-    // пароль и подтверждение пароля
-    echo '<p>Пароль: <input type="password" name="password" /><span class="error">* ' . $password_error . '</p>' . "\n";
-    echo '<p>Подтвердите пароль: <input type="password" name="password_confirmation" /><span class="error">* ' . $password_conf_error . '</p>' . "\n";
-    
-    // кнопка для отправки формы
-    if ($type == "signup")
-        echo '<input type="submit" value="Зарегистрироваться">' . "\n";
-    elseif ($type == "profile")
-        echo '<input type="submit" value="Сохранить изменения">' . "\n";
-    
-    echo '</form>' . "\n";
-}
-
 // проверить корректность поля имени пользователя
 function checkName(&$name_value, &$name_error, $validation_function, $unique_function) {
     if (!empty($_POST["name"])) 
