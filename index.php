@@ -17,14 +17,14 @@ createHeader();
         <?php showMessage(); ?>
         <div id="user-menu">
             <div id="title">
-                <h2>Добро пожаловать!</h2>
+                <h1>Добро пожаловать!</h1>
             </div>
             <div id="buttons">
                 <div id="signin">
-                    <a href="signin.php">Войти</a>
+                    <a id="signin-button" class="button" href="signin.php">Войти</a>
                 </div>
                 <div id="signup">
-                    <a href="signup.php">Зарегистрироваться</a>
+                    <a id="signup-button" class="button" href="signup.php">Зарегистрироваться</a>
                 </div>
             </div>
         </div>

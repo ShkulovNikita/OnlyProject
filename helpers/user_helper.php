@@ -46,6 +46,14 @@ function checkLogin() {
         return $id;
 }
 
+// разлогиниться
+function logout() {
+    session_destroy();
+    storeValueToSession("message", "Вы вышли из профиля");
+    header("Location: " . "../index.php");
+    die();
+}
+
 // возврат на главную страницу
 function redirectToMainPage() {
     storeValueToSession("message", "Войдите в аккаунт");

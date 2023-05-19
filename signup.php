@@ -25,8 +25,19 @@ $password_conf_error = getValueFromSession("password_conf_error");
 session_destroy();
 ?>
 <?php createHeader(); ?>
-<h2>Форма регистрации</h2>
-<?php createForm("signup", $name, $phone, $email, $name_error, $phone_error, $email_error, $password_error, $password_conf_error) ?>
+<div class="flex-container">
+    <div class="empty-block"></div>
+    <div id="content">
+        <?php showMessage(); ?>
+        <div id="user-menu">
+            <div id="title">
+                <h1>Форма регистрации</h1>
+            </div>
+            <?php createForm("signup", $name, $phone, $email, $name_error, $phone_error, $email_error, $password_error, $password_conf_error) ?>
+        </div>
+    </div>
+    <div class="empty-block"></div>
+</div>
 <?php createFooter() ?>
 </body>
 </html>

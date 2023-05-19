@@ -10,30 +10,42 @@ function createForm($type, $name, $phone, $email, $name_error, $phone_error, $em
     elseif ($type == "profile")
         echo '<form action="formhandlers/edit_profile.php" method="POST">' . "\n";
     
-    // поле для имени пользователя
-    echo '<p>Имя: <input type="text" name="name" value="' . $name . '" /><span class="error">* ' . $name_error . '</p>' . "\n";
-    
-    // поле для телефона
-    echo '<p>Телефон: <input type="tel" placeholder="+7XXXXXXXXXX" name="phone" value="' . $phone . '" /><span class="error">* ' . $phone_error . '</p>' . "\n";
-    
-    // почта
-    echo '<p>Почта: <input type="email" placeholder="user@yandex.ru" name="email" value="' . $email . '" /><span class="error">* ' . $email_error . "</p>" . "\n";
-    
-    // пароль и подтверждение пароля
-    echo '<p>Пароль: <input type="password" name="password" /><span class="error">* ' . $password_error . '</p>' . "\n";
-    echo '<p>Подтвердите пароль: <input type="password" name="password_confirmation" /><span class="error">* ' . $password_conf_error . '</p>' . "\n";
+    // поля формы
+    createField("Имя", "text", "name", $name, $name_error);
+    createField("Телефон", "tel", "phone", $phone, $phone_error, "+7XXXXXXXXXX");
+    createField("Почта", "email", "email", $email, $email_error, "user@yandex.ru");
+    createField("Пароль", "password", "password", null, $password_error);
+    createField("Подтвердите пароль", "password", "password_confirmation", null, $password_conf_error);
     
     // кнопка для отправки формы
     if ($type == "signup")
-        echo '<input type="submit" value="Зарегистрироваться">' . "\n";
+        echo '<input class="button" type="submit" value="Зарегистрироваться">' . "\n";
     elseif ($type == "profile")
-        echo '<input type="submit" value="Сохранить изменения">' . "\n";
+        echo '<input class="button" type="submit" value="Сохранить изменения">' . "\n";
     
     echo '</form>' . "\n";
 }
 
+// вывод одного поля формы
+function createField($text, $input_type, $name, $value, $error, $placeholder = null) {
+    echo '<div class="flex-container">' . "\n" . '<div class="left-side">' . "\n";
+    echo "<p>" . $text . ":</p>" . "\n";
+    echo '</div>' . "\n" . '<div class="right-side">' . "\n";
+    echo '<input type="' . $input_type . '" ';
+    if (!is_null($placeholder))
+        echo 'placeholder="' . $placeholder . '" ';
+    echo 'name="' . $name . '" ';
+    if (!is_null($value))
+        echo 'value="' . $value . '" '; 
+    echo '/><span class="error">*</span>' . "\n";
+    echo '</div>' . "\n" . "</div>" . "\n";
+    echo '<div class="error-line">' . "\n";
+    echo showError($error);
+    echo '</div>' . "\n";
+}
+
 function createHeader() {
-    echo "<header><p>Тестовое задание для стажировки в Only</p></header>";
+    echo '<a class="header-link" href="index.php"><header><p>Тестовое задание для стажировки в Only</p></header></a>';
 }
 
 function createFooter() {
@@ -50,6 +62,12 @@ function showMessage() {
         echo '</div>' . "\n";
         unset($_SESSION["message"]);
     }
+}
+
+// вывести ошибку для поля формы
+function showError($error) {
+    if ($error != "")
+        echo '<p class="error">' . $error . '</p>' . "\n";
 }
 
 ?>

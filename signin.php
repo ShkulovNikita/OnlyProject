@@ -19,15 +19,50 @@ $login = getValueFromSession("login");
 $login_error = getValueFromSession("login_error");
 $password_error = getValueFromSession("password_error");
 
+removeValuesFromSession(compact("login_error", "password_error"));
 session_destroy();
+
 ?>
 <?php createHeader(); ?>
-<h2>Форма авторизации</h2>
-<form action="formhandlers/authorization.php" method="POST">
-    <p>Логин (телефон или почта): <input type="text" name="login" value="<?php echo $login;?>" /><span class="error">* <?php echo $login_error ?></p>
-    <p>Пароль: <input type="password" name="password" /><span class="error">* <?php echo $password_error ?></p>
-    <input type="submit" value="Войти в систему">
-</form>
+<div class="flex-container">
+    <div class="empty-block"></div>
+    <div id="content">
+        <?php showMessage(); ?>
+        <div id="user-menu">
+            <div id="title">
+                <h1>Вход в систему</h1>
+            </div>
+            <form action="formhandlers/authorization.php" method="POST">
+                <div class="flex-container">
+                    <div class="left-side">
+                        <p>Логин (телефон или почта):</p>
+                    </div>
+                    <div class="right-side">
+                        <input type="text" name="login" value="<?php echo $login;?>" /><span class="error">*</span>
+                    </div>
+                </div>    
+                <div class="error-line">
+                    <?php showError($login_error); ?>
+                </div>
+                <div class="flex-container">
+                    <div class="left-side">
+                        <p>Пароль:</p>
+                    </div>
+                    <div class="right-side">
+                        <input type="password" name="password" /><span class="error">*</span>
+                    </div>
+                </div>   
+                <div class="error-line">
+                    <?php showError($password_error); ?>
+                </div>
+                <input class="button" type="submit" value="Войти">
+            </form>
+        </div>
+    </div>
+    <div class="empty-block"></div>
+</div>
 <?php createFooter(); ?>
 </body>
 </html>
+
+
