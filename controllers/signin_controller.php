@@ -2,6 +2,7 @@
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_helper.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/router.php";
 
 /* Скрипты для обработки формы авторизации */
@@ -111,8 +112,7 @@ function returnToLogin($login, $login_error, $password_error) {
     // сохранить в сессию
     saveValuesToSession($values_to_store);
     // редирект обратно на страницу авторизации
-    header("Location: " . "../signin.php");
-    die();
+    routeUser("signinBack");
 }
 
 // действия перед загрузкой страницы

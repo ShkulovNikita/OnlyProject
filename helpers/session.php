@@ -39,7 +39,7 @@ function getValueFromSession($key) {
     if(!isset($_SESSION)) 
         session_start(); 
 
-    if (isset($_SESSION[$key]))
+    if(isset($_SESSION[$key]))
         return $_SESSION[$key];
     else
         return "";

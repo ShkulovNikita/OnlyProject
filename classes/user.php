@@ -33,12 +33,13 @@ class User {
         }
     }
 
-    // проверка, вошел ли пользователь в систему 
+    // проверка, вошел ли пользователь в аккаунт
     static function isLoggedIn() {
-        if (getValueFromSession("user_id") != "")
-            return true;
-        else
+        $id = getValueFromSession("user_id");
+        if ($id == "")
             return false;
+        else
+            return $id;
     }
 }
 ?>

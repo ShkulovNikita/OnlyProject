@@ -2,6 +2,7 @@
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_helper.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/router.php";
 
 /* Скрипты для обработки формы регистрации */
@@ -36,8 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         storeValueToSession("message", "Вы успешно зарегистрировались!");
 
         // редирект на главную страницу после успешной регистрации
-        header("Location: " . "../index.php");
-        die();
+        routeUser("signupIndex");
     }
     else {
         /* сохранить введенные значения и ошибки в сессию, 
@@ -49,8 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         saveValuesToSession($values_to_store);
 
         // редирект обратно на страницу регистрации
-        header("Location: " . "../signup.php");
-        die();
+        routeUser("signupBack");
     }
 }
 

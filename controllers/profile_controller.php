@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name_error = $phone_error = $email_error = $password_error = $password_conf_error = "";
 
     // получить текущего пользователя
-    $id = checkLogin();
+    $id = User::isLoggedIn();
     if ($id == false)
         redirectToMainPage();
     $user = getUserData($id);
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         || ($password_error != "") || ($password_conf_error != "")) {
         saveValuesToSession(compact("name_error", "phone_error", "email_error", 
                                     "password_error", "password_conf_error"));
-        redirectToProfile();
+        routeUser("profileBack");
     }
 
     // выполнить обновление данных профиля
@@ -43,13 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else
         storeValueToSession("message", "Профиль успешно обновлен");
 
-    redirectToProfile();
-}
-
-// возврат на страницу профиля
-function redirectToProfile() {
-    header("Location: " . "../profile.php");
-    die();
+    routeUser("profileBack");
 }
 
 // действия перед загрузкой страницы
@@ -57,7 +51,7 @@ function loadPage(&$name_error, &$phone_error, &$email_error, &$password_error, 
     routeUser("profile");
 
     // идентификатор текущего пользователя
-    $id = checkLogin();
+    $id = User::isLoggedIn();
     $user = getUserData($id);
 
     if ($user == "Не удалось получить пользователя")

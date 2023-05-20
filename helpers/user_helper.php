@@ -3,7 +3,8 @@ include_once "$_SERVER[DOCUMENT_ROOT]/classes/user.php";
 include_once "db_connector.php";
 include_once "session.php";
 include_once "validator.php";
-/* Вспомогательные функции для профиля пользователя */
+
+/* Вспомогательные функции, связанные с пользователями */
 
 // получить данные о пользователе и вернуть в виде объекта
 function getUserData($id) {
@@ -38,20 +39,17 @@ function updateUser($user, $name, $email, $phone, $password) {
     return editUser($connection, $user->id, $name, $phone, $email, $password);
 }
 
-// проверка, вошел ли пользователь в аккаунт
-function checkLogin() {
-    $id = getValueFromSession("user_id");
-    if ($id == "")
-        return false;
-    else
-        return $id;
-}
-
-// возврат на главную страницу
-function redirectToMainPage() {
-    storeValueToSession("message", "Войдите в аккаунт");
-    header("Location: " . "../index.php");
-    die();
+// оставить последние 10 цифр телефона
+function truncatePhone (&$phone) {
+    // убрать первую цифру и плюс, если есть
+    switch(strlen($phone)) {
+        case 11:
+            $phone = substr($phone, 1, strlen($phone) - 1);
+            break;
+        case 12:
+            $phone = substr($phone, 2, strlen($phone) - 1);
+            break;
+    }
 }
 
 // добавить +7 к номеру телефона

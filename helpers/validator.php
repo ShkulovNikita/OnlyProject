@@ -35,17 +35,4 @@ function validate($validation_function, $value, &$error) {
     if ($validation_result != "ok") 
         $error = $validation_result;
 }
-
-// оставить последние 10 цифр телефона
-function truncatePhone (&$phone) {
-    // убрать первую цифру и плюс, если есть
-    switch(strlen($phone)) {
-        case 11:
-            $phone = substr($phone, 1, strlen($phone) - 1);
-            break;
-        case 12:
-            $phone = substr($phone, 2, strlen($phone) - 1);
-            break;
-    }
-}
 ?>

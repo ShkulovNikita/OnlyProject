@@ -7,6 +7,8 @@ include_once "helpers/session.php";
 function routeUser($destination, $message = "") {
     // проверка, вошел ли пользователь в систему
     $loggedIn = User::isLoggedIn();
+    if ($loggedIn != false)
+        $loggedIn = true;
     // сохранить сообщение, если такое есть
     if ($message != "")
         storeValueToSession("message", $message);
@@ -25,7 +27,13 @@ function routeUser($destination, $message = "") {
             routeProfile($loggedIn);
             break;
         case "logout":
-            logout($message);
+            logout();
+            break;
+        case "signupIndex":
+            routeToIndex();
+            break;
+        default:
+            routeBack($loggedIn, $destination);
             break;
     }
 }
@@ -33,7 +41,12 @@ function routeUser($destination, $message = "") {
 // если пользователь залогинен, то перенаправление в профиль
 function routeIndex($loggedIn) {
     if($loggedIn)     
-        routeToProfile();   
+        routeToProfile(); 
+}
+
+function routeToIndex() {
+    header("Location: " . "../index.php");
+    die();
 }
 
 // если пользователь залогинен, то разлогинить его
@@ -51,7 +64,10 @@ function routeSignIn($loggedIn) {
 // если не залогинен, то перенаправить на главную страницу
 function routeProfile($loggedIn) {
     if($loggedIn == false)
-        routeIndex();
+    {
+        storeValueToSession("message", "Войдите в аккаунт");
+        routeToIndex();
+    }
 }
 
 function routeToProfile() {
@@ -60,10 +76,29 @@ function routeToProfile() {
 }
 
 function logout() {
-    header("Location: " . "../index.php");
     session_destroy();
     storeValueToSession("message", "Вы вышли из профиля");
+    header("Location: " . "../index.php");
     die();
 }
 
+// перенаправление обратно на страницу с формой 
+// при её неправильном заполнении
+function routeBack($loggedIn, $destination) {
+    switch($destination) {
+        case "profileBack":
+            routeToProfile();
+            break;
+        case "signinBack":
+            header("Location: " . "../signin.php");
+            die();
+            break;
+        case "signupBack":
+            header("Location: " . "../signup.php");
+            die();
+            break;
+        default:
+            routeIndex($loggedIn);
+    }
+}
 ?>
