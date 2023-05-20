@@ -6,9 +6,9 @@ include_once "session.php";
 function createForm($type, $name, $phone, $email, $name_error, $phone_error, $email_error, $password_error, $password_conf_error) {
     // заголовок формы со скриптом-обработчиком
     if ($type == "signup") 
-        echo '<form action="formhandlers/registration.php" method="POST">' . "\n";
+        echo '<form action="controllers/signup_controller.php" method="POST">' . "\n";
     elseif ($type == "profile")
-        echo '<form action="formhandlers/edit_profile.php" method="POST">' . "\n";
+        echo '<form action="controllers/profile_controller.php" method="POST">' . "\n";
     
     // поля формы
     createField("Имя", "text", "name", $name, $name_error);

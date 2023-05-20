@@ -4,27 +4,19 @@
 <title>Вход в систему</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" type="text/css" href="styles.css"/>
+<!--<script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>-->
 </head>
 <body>
 <?php 
-include_once "router.php";
-include_once "helpers/session.php";
+include_once "controllers/signin_controller.php";
 include_once "helpers/html_helper.php";
 
-routeUser("signin");
-
-// получить данные из сессии
-
 // логин (если был введен ранее)
-$login = getValueFromSession("login");
-
+$login = "";
 // ошибки
-$login_error = getValueFromSession("login_error");
-$password_error = getValueFromSession("password_error");
+$login_error = $password_error = "";
 
-removeValuesFromSession(compact("login_error", "password_error"));
-session_destroy();
-
+loadPage($login, $login_error, $password_error);
 ?>
 <?php createHeader(); ?>
 <div class="flex-container">
@@ -35,7 +27,7 @@ session_destroy();
             <div id="title">
                 <h1>Вход в систему</h1>
             </div>
-            <form action="formhandlers/authorization.php" method="POST">
+            <form action="controllers/signin_controller.php" method="POST">
                 <div class="flex-container">
                     <div class="left-side">
                         <p>Логин (телефон или почта):</p>
@@ -58,6 +50,11 @@ session_destroy();
                 <div class="error-line">
                     <?php showError($password_error); ?>
                 </div>
+                <!--<div
+                    id="captcha-container"
+                    class="smart-captcha"
+                    data-sitekey="ysc1_TNOu5SOalXzb1rg8kKVcdSWeckcp4O8abuBiXHEqc8c7be6e"
+                ></div>-->
                 <input class="button" type="submit" value="Войти">
             </form>
         </div>
@@ -67,5 +64,3 @@ session_destroy();
 <?php createFooter(); ?>
 </body>
 </html>
-
-

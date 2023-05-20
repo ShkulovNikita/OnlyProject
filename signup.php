@@ -7,25 +7,16 @@
 </head>
 <body>
 <?php 
-include_once "router.php";
-include_once "helpers/session.php";
 include_once "helpers/html_helper.php";
+include_once "controllers/signup_controller.php";
 
-routeUser("signup");
+/* переменные, используемые на странице */
+// значения полей ввода
+$name = $phone = $email = ""; 
+// сообщения об ошибках в полях
+$name_error = $phone_error = $email_error = $password_error = $password_conf_error = "";
 
-// значения полей (если были введены ранее)
-$name = getValueFromSession("name");
-$phone = getValueFromSession("phone");
-$email = getValueFromSession("email");
-
-// ошибки
-$name_error = getValueFromSession("name_error");
-$phone_error = getValueFromSession("phone_error");
-$email_error = getValueFromSession("email_error");
-$password_error = getValueFromSession("password_error");
-$password_conf_error = getValueFromSession("password_conf_error");
-
-session_destroy();
+loadPage($name, $phone, $email, $name_error, $phone_error, $email_error, $password_error, $password_conf_error);
 ?>
 <?php createHeader(); ?>
 <div class="flex-container">

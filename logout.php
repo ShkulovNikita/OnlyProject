@@ -1,5 +1,6 @@
 <?php 
-include_once "router.php";
+include_once "controllers/logout_controller.php";
+
 /* Скрипт, ответственый за выход пользователя из профиля */
-routeUser("logout");
+loadPage();
 ?>

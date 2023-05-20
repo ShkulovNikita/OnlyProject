@@ -8,9 +8,9 @@
 <body>
 <?php
 include_once "helpers/html_helper.php";
-include_once "router.php";
+include_once "controllers/index_controller.php";
 
-routeUser("index");
+loadPage();
 ?>
 <?php createHeader(); ?>
 <div class="flex-container">

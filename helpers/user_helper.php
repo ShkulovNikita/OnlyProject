@@ -2,6 +2,7 @@
 include_once "$_SERVER[DOCUMENT_ROOT]/classes/user.php";
 include_once "db_connector.php";
 include_once "session.php";
+include_once "validator.php";
 /* Вспомогательные функции для профиля пользователя */
 
 // получить данные о пользователе и вернуть в виде объекта
@@ -44,14 +45,6 @@ function checkLogin() {
         return false;
     else
         return $id;
-}
-
-// разлогиниться
-function logout() {
-    session_destroy();
-    storeValueToSession("message", "Вы вышли из профиля");
-    header("Location: " . "../index.php");
-    die();
 }
 
 // возврат на главную страницу
