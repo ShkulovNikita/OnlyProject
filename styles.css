@@ -209,3 +209,12 @@ form div.flex-container {
 #logout-button {
     font-size: 1em;
 }
+
+/* ----------------------------- */
+/* Стиль для Yandex SmartCaptcha */
+/* ----------------------------- */
+
+#captcha-container {
+    margin-top: 1em;
+    height: 100px;
+}

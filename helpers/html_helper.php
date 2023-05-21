@@ -14,7 +14,10 @@ function createForm($type, $name, $phone, $email, $name_error, $phone_error, $em
     createField("Имя", "text", "name", $name, $name_error);
     createField("Телефон", "tel", "phone", $phone, $phone_error, "+7XXXXXXXXXX");
     createField("Почта", "email", "email", $email, $email_error, "user@yandex.ru");
-    createField("Пароль", "password", "password", null, $password_error);
+    if ($type == "profile")
+        createField("Пароль (изменить)", "password", "password", null, $password_error);
+    else
+        createField("Пароль", "password", "password", null, $password_error);
     createField("Подтвердите пароль", "password", "password_confirmation", null, $password_conf_error);
     
     // кнопка для отправки формы
