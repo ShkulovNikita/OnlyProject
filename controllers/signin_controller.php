@@ -3,6 +3,7 @@ include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_helper.php";
+include_once "$_SERVER[DOCUMENT_ROOT]/helpers/captcha_helper.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/router.php";
 
 /* Скрипты для обработки формы авторизации */
@@ -12,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // переменные, соответствующие полям формы
     $login = $password = "";
     // переменные с ошибками
-    $login_error = $email_message = $phone_message = $password_error = "";
+    $login_error = $email_message = $phone_message = $password_error = $captcha_error = "";
     // тип введенного логина: телефон или почта
     $login_type = "";
 
@@ -58,14 +59,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         validate($validate_password, $password, $password_error);
     }
 
+    // проверить успешность прохождения капчи
+    $captcha_result = check_captcha_passed();
+    if ($captcha_result != "Passed") 
+        $captcha_error = $captcha_result;
+    else 
+        $captcha_error = "";
+
     // если не удалось подключиться к БД, то вывести соответствующее сообщение
     checkDbError($login_type, $login_error);
     checkDbError($login_type, $password_error);
-
+    
     // если была найдена какая-либо ошибка, то вернуться к форме для исправления
-    if (($login_type == "") || ($login_error != "") || ($password_error != "")) {
-        returnToLogin($login, $login_error, $password_error);
-    }
+    if (($login_type == "") || ($login_error != "") || ($password_error != "") || ($captcha_error != "")) 
+        returnToLogin($login, $login_error, $password_error, $captcha_error);
 
     // если был успешно определен тип логина и введен корректный пароль,
     // то попытка залогиниться
@@ -75,11 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (is_null($user)) {
         $login_error = "Не удалось получить пользователя";
-        returnToLogin($login, $login_error, $password_error);
+        returnToLogin($login, $login_error, $password_error, $captcha_error);
     }
     elseif (($user == "Пользователь не найден") || ($user == "Введен неверный пароль")) {
         $password_error = $user;
-        returnToLogin($login, $login_error, $password_error);
+        returnToLogin($login, $login_error, $password_error, $captcha_error);
     }
     else {
         // вход успешно выполнен, сохранить ID текущего пользователя в сессию
@@ -117,9 +124,9 @@ function tryLogin ($login, $login_type, $password) {
 }
 
 // возвращение к форме авторизации
-function returnToLogin($login, $login_error, $password_error) {
+function returnToLogin($login, $login_error, $password_error, $captcha_error) {
     // записать сообщения и введенный логин в массив
-    $values_to_store = compact("login", "login_error", "password_error");
+    $values_to_store = compact("login", "login_error", "password_error", "captcha_error");
     // сохранить в сессию
     saveValuesToSession($values_to_store);
     // редирект обратно на страницу авторизации
@@ -127,7 +134,7 @@ function returnToLogin($login, $login_error, $password_error) {
 }
 
 // действия перед загрузкой страницы
-function loadPage(&$login, &$login_error, &$password_error) {
+function loadPage(&$login, &$login_error, &$password_error, &$captcha_error) {
     routeUser("signin");
 
     // получить данные из сессии
@@ -138,8 +145,9 @@ function loadPage(&$login, &$login_error, &$password_error) {
     // ошибки
     $login_error = getValueFromSession("login_error");
     $password_error = getValueFromSession("password_error");
+    $captcha_error = getValueFromSession("captcha_error");
 
-    removeValuesFromSession(compact("login_error", "password_error"));
+    removeValuesFromSession(compact("login_error", "password_error", "captcha_error"));
     session_destroy();
 }
 

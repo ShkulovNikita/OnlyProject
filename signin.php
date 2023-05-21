@@ -4,7 +4,7 @@
 <title>Вход в систему</title>
 <meta charset="utf-8" />
 <link rel="stylesheet" type="text/css" href="styles.css"/>
-<!--<script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>-->
+<script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
 </head>
 <body>
 <?php 
@@ -14,9 +14,9 @@ include_once "helpers/html_helper.php";
 // логин (если был введен ранее)
 $login = "";
 // ошибки
-$login_error = $password_error = "";
+$login_error = $password_error = $captcha_error = "";
 
-loadPage($login, $login_error, $password_error);
+loadPage($login, $login_error, $password_error, $captcha_error);
 ?>
 <?php createHeader(); ?>
 <div class="flex-container">
@@ -50,11 +50,14 @@ loadPage($login, $login_error, $password_error);
                 <div class="error-line">
                     <?php showError($password_error); ?>
                 </div>
-                <!--<div
+                <div
                     id="captcha-container"
                     class="smart-captcha"
                     data-sitekey="ysc1_TNOu5SOalXzb1rg8kKVcdSWeckcp4O8abuBiXHEqc8c7be6e"
-                ></div>-->
+                ></div>
+                <div class="error-line">
+                    <?php showError($captcha_error); ?>
+                </div>
                 <input class="button" type="submit" value="Войти">
             </form>
         </div>
