@@ -21,6 +21,9 @@ $validate_phone = function ($phone) {
 // функция для проверки уникальности телефона
 $validate_phone_unique = function ($phone) {
     $connection = connect();
+    if (is_string($connection))
+        return $connection;
+
     // оставить последние 10 цифр телефона
     truncatePhone($phone);
     if (sameUserExists($connection, "phone", $phone))

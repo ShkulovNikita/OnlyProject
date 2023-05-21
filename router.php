@@ -76,7 +76,7 @@ function routeToProfile() {
 }
 
 function logout() {
-    session_destroy();
+    sessionClear();
     storeValueToSession("message", "Вы вышли из профиля");
     header("Location: " . "../index.php");
     die();
@@ -99,6 +99,8 @@ function routeBack($loggedIn, $destination) {
             break;
         default:
             routeIndex($loggedIn);
+            die();
+            break;
     }
 }
 ?>

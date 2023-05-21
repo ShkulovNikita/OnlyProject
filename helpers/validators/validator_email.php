@@ -23,6 +23,9 @@ $validate_email = function ($email) {
 // функция для проверки уникальности почты
 $validate_email_unique = function($email) {
     $connection = connect();
+    if (is_string($connection))
+        return $connection;
+
     if (sameUserExists($connection, "email", $email))
         return "Адрес почты уже используется";
     return "ok";

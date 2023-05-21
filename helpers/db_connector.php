@@ -23,7 +23,7 @@ function connect() {
         return $connection;
     }
     catch (PDOException $ex) {
-        echo "Ошибка подключения: " . $ex->getMessage();
+        return "Ошибка подключения: " . $ex->getMessage();
     }
 }
 
@@ -35,7 +35,7 @@ function createDatabase($connection) {
         $connection->exec($sql);
     }
     catch (PDOException $ex) {
-        echo "Ошибка создания БД: " . $ex->getMessage();
+        return "Ошибка создания БД: " . $ex->getMessage();
     }
 }
 
@@ -47,7 +47,7 @@ function createUsersTable($connection) {
         $connection->exec($sql);
     }
     catch (PDOException $ex) {
-        echo "Ошибка создания таблицы: " . $ex->getMessage();
+        return "Ошибка создания таблицы: " . $ex->getMessage();
     }
 }
 
@@ -67,7 +67,7 @@ function createUser($connection, $name, $phone, $email, $password) {
         return $statement->execute();
     }
     catch (PDOException $ex) {
-        echo "Ошибка добавления пользователя: " . $ex->getMessage();
+        return "Ошибка добавления пользователя: " . $ex->getMessage();
     }
 }
 
@@ -87,7 +87,7 @@ function getUser($connection, $type, $value) {
             echo "Пользователь не найден";
     }
     catch (PDOException $ex) {
-        echo "Ошибка получения пользователя: " . $ex->getMessage();
+        return "Ошибка получения пользователя: " . $ex->getMessage();
     }
 }
 

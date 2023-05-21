@@ -1,7 +1,6 @@
 <?php
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/validator.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/session.php";
-include_once "$_SERVER[DOCUMENT_ROOT]/helpers/db_connector.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/helpers/user_helper.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/classes/user.php";
 include_once "$_SERVER[DOCUMENT_ROOT]/router.php";
@@ -19,7 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = User::isLoggedIn();
     if ($id == false)
         redirectToMainPage();
+
     $user = getUserData($id);
+    // проверить ошибки получения пользователя из БД
+    if (is_string($user))
+        if (strpos($user, "Ошибка") !== false) {
+            storeValueToSession("message", $user);
+            routeUser("logout");
+        }
 
     /* обработка введенных значений полей */
     checkEditField($user, "name", $name, $name_error, $validate_name);

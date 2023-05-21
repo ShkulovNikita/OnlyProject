@@ -17,6 +17,10 @@ class User {
     function isTheSameUser($type, $value) {
         // получить пользователя с такими же данными
         $connection = connect();
+
+        if (is_string($connection))
+            return $connection;
+
         $same_user = sameUserExists($connection, $type, $value);
     
         // такого пользователя нет, поле уникально

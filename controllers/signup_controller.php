@@ -31,7 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (($name_error == "") && ($phone_error == "") && ($email_error == "") 
         && ($password_error == "") && ($password_conf_error == "")) {
         // создать нового пользователя
-        signUp($name, $phone, $email, $password);
+        $result = signUp($name, $phone, $email, $password);
+
+        if (is_string($result))
+            routeUser("signupBack", $result);
+        elseif ($result == false)
+            routeUser("signupBack", "Не удалось создать нового пользователя");
 
         // сохранить факт успешно произведенной регистрации в сессиию
         storeValueToSession("message", "Вы успешно зарегистрировались!");
@@ -42,6 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
         /* сохранить введенные значения и ошибки в сессию, 
         чтобы показать их пользователю */
+
+        // проверить, что не было ошибок БД
+        checkErrors($name_error, $phone_error, $email_error, $password_error, $password_conf_error);
+
+        echo "!!!!!!!!!!!!";
+        echo $name_error;
 
         // упаковать переменные в массив
         $values_to_store = compact("name", "phone", "email", "name_error", "phone_error", "email_error", "password_error", "password_conf_error");
@@ -63,9 +74,17 @@ function signUp($name, $phone, $email, $password) {
 
     // установить соединение с БД
     $connection = connect();
+    if (is_string($connection))
+        return $connection;
+
+    // проверка соединения
 
     // создать пользователя в БД
-    createUser($connection, $name, $phone, $email, $password);
+    $result = createUser($connection, $name, $phone, $email, $password);
+    if ($result == 1)
+        return true;
+    else
+        return false;
 }
 
 // действия до загрузки страницы
@@ -88,5 +107,21 @@ function loadPage(&$name, &$phone, &$email, &$name_error, &$phone_error,
     
     // удалить их из сессии
     removeValuesFromSession(compact("name", "phone", "email", "name_error", "phone_error", "email_error", "password_error", "password_conf_error"));
+}
+
+function checkErrors(&$name_error, &$phone_error, &$email_error, &$password_error, &$password_conf_error) {
+    checkDbError($name_error);
+    checkDbError($phone_error);
+    checkDbError($email_error);
+    checkDbError($password_error);
+    checkDbError($password_conf_error);
+}
+
+function checkDbError(&$error) {
+    echo "HERE2";
+    if (strpos($error, "Ошибка") !== false) {
+        storeValueToSession("message", $error);
+        $error = "";
+    }
 }
 ?>

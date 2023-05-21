@@ -12,7 +12,8 @@ function checkName(&$name_value, &$name_error, $validation_function, $unique_fun
 // функция для валидации имени
 $validate_name = function ($name) {
     // имя должно содержать только буквы, пробелы и дефисы
-    if (!preg_match("/^(([a-zA-Z-' ])|([а-яА-ЯЁё])|([0-9]))*$/", $name)) 
+    //if (!preg_match("/^(([a-zA-Z-' ])|([а-яА-ЯЁё])|([0-9]))*$/", $name)) 
+    if (!preg_match("/^(([a-zA-Z-' ])|([0-9]))*$/", $name)) 
         return "Некорректные символы в имени";
     // проверка количества символов
     if (strlen($name) > 150) 
@@ -25,6 +26,9 @@ $validate_name = function ($name) {
 // функция для проверки уникальности имени
 $validate_name_unique = function($name) {
     $connection = connect();
+    if (is_string($connection))
+        return $connection;
+
     if (sameUserExists($connection, "name", $name))
         return "Имя уже используется";
     return "ok";

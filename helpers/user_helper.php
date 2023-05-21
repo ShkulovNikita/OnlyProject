@@ -11,6 +11,9 @@ function getUserData($id) {
     // обратиться к БД
     $connection = connect();
 
+    if (is_string($connection))
+        return $connection;
+
     // получить пользователя
     $user = getUser($connection, "id", $id);
 

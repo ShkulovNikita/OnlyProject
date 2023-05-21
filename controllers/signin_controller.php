@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // был введен номер телефона
         elseif ($phone_message == "") {
             validate($validate_phone_unique, $login, $phone_message);
+            checkDbError($login_type, $phone_message);
             // совпадение найдено
             if ($phone_message == "Телефон уже используется")
                 $login_type = "phone";
@@ -41,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // был введен адрес почты
         elseif ($email_message == "") {
             validate($validate_email_unique, $login, $email_message);
+            checkDbError($login_type, $email_message);
             if ($email_message == "Адрес почты уже используется")
                 $login_type = "email";
             else
@@ -56,6 +58,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         validate($validate_password, $password, $password_error);
     }
 
+    // если не удалось подключиться к БД, то вывести соответствующее сообщение
+    checkDbError($login_type, $login_error);
+    checkDbError($login_type, $password_error);
+
     // если была найдена какая-либо ошибка, то вернуться к форме для исправления
     if (($login_type == "") || ($login_error != "") || ($password_error != "")) {
         returnToLogin($login, $login_error, $password_error);
@@ -64,6 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // если был успешно определен тип логина и введен корректный пароль,
     // то попытка залогиниться
     $user = tryLogin($login, $login_type, $password);
+    if (is_string($user))
+        routeUser("signinBack", $user);
 
     if (is_null($user)) {
         $login_error = "Не удалось получить пользователя";
@@ -76,8 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
         // вход успешно выполнен, сохранить ID текущего пользователя в сессию
         storeValueToSession("user_id", $user["id"]);
-        header("Location: " . "../profile.php");
-        die();
+        routeUser("signin");
     }
 }
 
@@ -89,6 +96,10 @@ function tryLogin ($login, $login_type, $password) {
 
     // установить соединение с БД
     $connection = connect();
+
+    // проверка соединения
+    if (is_string($connection)) 
+        return $connection;
 
     // получить пользователя
     $user = getUser($connection, $login_type, $login);
@@ -130,5 +141,13 @@ function loadPage(&$login, &$login_error, &$password_error) {
 
     removeValuesFromSession(compact("login_error", "password_error"));
     session_destroy();
+}
+
+function checkDbError(&$login_type, &$error) {
+    if (strpos($error, "Ошибка") !== false) {
+        storeValueToSession("message", $error);
+        $error = "";
+        $login_type = "";
+    }
 }
 ?>

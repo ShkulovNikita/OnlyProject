@@ -45,4 +45,11 @@ function getValueFromSession($key) {
         return "";
 }
 
+// очистить сессию 
+function sessionClear() {
+    foreach ($_SESSION as $key=>$val) 
+        if ($key != "message") 
+            unset($_SESSION[$key]);
+}
+
 ?>
